@@ -1,1 +1,6 @@
 .venv
+result.json
+stanford_cs324_datas.json
+crawler.py
+get_links.py
+universal_crawler.py
