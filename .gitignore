@@ -4,3 +4,5 @@ stanford_cs324_datas.json
 crawler.py
 get_links.py
 universal_crawler.py
+output.json
+output.txt
