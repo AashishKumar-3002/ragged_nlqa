@@ -6,3 +6,7 @@ get_links.py
 universal_crawler.py
 output.json
 output.txt
+final_result.json
+text_spacy.json
+text.json
+__pycache__/

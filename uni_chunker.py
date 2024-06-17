@@ -115,11 +115,12 @@ class UniTextProcessor:
         return chunks_store
 
 # Usage example:
-loader = UniTextLoader("final_result.json", encoding="utf-8", autodetect_encoding=True)
-text_processor = UniTextProcessor(loader, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False)
-processed_chunks = text_processor.spacy_process_documents()
+if __name__ == "__main__":
+    loader = UniTextLoader("final_result.json", encoding="utf-8", autodetect_encoding=True)
+    text_processor = UniTextProcessor(loader, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False)
+    processed_chunks = text_processor.spacy_process_documents()
 
-print(processed_chunks)
-print(len(processed_chunks))
-print([d.page_content for d in processed_chunks])
-print([d.metadata for d in processed_chunks])
+    print(processed_chunks)
+    print(len(processed_chunks))
+    print([d.page_content for d in processed_chunks])
+    print([d.metadata for d in processed_chunks])
