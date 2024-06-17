@@ -1,2 +1,6 @@
 bs4
 requests
+langchain
+spacy
+langchain-community
+langchain-core
