@@ -16,17 +16,36 @@ class VectorManager:
         self.collection_name = collection_name
 
     def upsert_documents(self, documents):
-
-        qdrant = Qdrant.from_documents(
-            documents,
-            self.embeddings,
-            url=self.url,
-            api_key=self.api_key,
-            path=self.path,
-            collection_name=self.collection_name,
-        )
-
-        return qdrant
+        try:
+            if self.url is None or self.api_key is None and self.path is not None:
+                qdrant = Qdrant.from_documents(
+                    documents,
+                    self.embeddings,
+                    path=self.path,
+                    collection_name=self.collection_name,
+                )
+            elif self.url is not None and self.api_key is not None and self.path is None:
+                qdrant = Qdrant.from_documents(
+                    documents,
+                    self.embeddings,
+                    url=self.url,
+                    api_key=self.api_key,
+                    collection_name=self.collection_name,
+                )
+            elif self.url is not None and self.api_key is not None and self.path is not None:
+                qdrant = Qdrant.from_documents(
+                    documents,
+                    self.embeddings,
+                    url=self.url,
+                    api_key=self.api_key,
+                    path=self.path,
+                    collection_name=self.collection_name,
+                )
+            else:
+                raise ValueError("Either URL and API key or path must be provided")
+            return qdrant
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     model_name="sentence-transformers/all-mpnet-base-v2"
