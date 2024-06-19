@@ -10,3 +10,5 @@ final_result.json
 text_spacy.json
 text.json
 __pycache__/
+output1.txt
+db/
