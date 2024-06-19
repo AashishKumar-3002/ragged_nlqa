@@ -40,7 +40,7 @@ class UniTextLoader(BaseLoader):
                         "source": source,
                         "source_hostname": source_hostname,
                         "excerpt": excerpt,
-                        "sublinks": sublinks
+                        "sublinks": str(sublinks)
                     }
                     document = Document(page_content=text, metadata=metadata)
                     documents.append(document)
@@ -73,7 +73,7 @@ class UniTextLoader(BaseLoader):
                                     "source": source,
                                     "source_hostname": source_hostname,
                                     "excerpt": excerpt,
-                                    "sublinks": sublinks
+                                    "sublinks": str(sublinks)
                                 }
                                 document = Document(page_content=text, metadata=metadata)
                                 documents.append(document)
@@ -89,13 +89,14 @@ class UniTextLoader(BaseLoader):
 
 
 class UniTextProcessor:
-    def __init__(self, loader: BaseLoader, chunk_size: Optional[int] = None, chunk_overlap: Optional[int] = None, use_sizeoverlap: Optional[bool] = False , add_start_index: Optional[bool] = False , allow_chunk_oversize: Optional[bool] = False) -> None:
+    def __init__(self, loader: BaseLoader, chunk_size: Optional[int] = None, chunk_overlap: Optional[int] = None, use_sizeoverlap: Optional[bool] = False , add_start_index: Optional[bool] = False , allow_chunk_oversize: Optional[bool] = False , spacy_model: str = 'en_core_web_md') -> None:
         self.loader = loader
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.use_sizeoverlap = use_sizeoverlap
         self.add_start_index = add_start_index
         self.allow_chunk_oversize = allow_chunk_oversize
+        self.spacy_model = spacy_model
 
     def spacy_process_documents(self) -> List[str]:
         documents = self.loader.load()
@@ -104,23 +105,27 @@ class UniTextProcessor:
             chunk_overlap=self.chunk_overlap, 
             use_sizeoverlap=self.use_sizeoverlap,
             add_start_index=self.add_start_index,
-            allow_chunk_oversize=self.allow_chunk_oversize
+            allow_chunk_oversize=self.allow_chunk_oversize,
+            model_name=self.spacy_model
         )
-        MODEL_NAME = 'en_core_web_md'
         chunks_store = []
         for doc in documents:
             new_doc = [Document(page_content=doc.page_content, metadata=doc.metadata)]
-            doc_text = spacy_text_splitter.split_spacy_documents(new_doc , model_name=MODEL_NAME)
+            doc_text = spacy_text_splitter.split_spacy_documents(new_doc)
             chunks_store.extend(doc_text)
         return chunks_store
 
 # Usage example:
 if __name__ == "__main__":
     loader = UniTextLoader("final_result.json", encoding="utf-8", autodetect_encoding=True)
-    text_processor = UniTextProcessor(loader, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False)
+    text_processor = UniTextProcessor(loader, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False , spacy_model='en_core_web_md')
     processed_chunks = text_processor.spacy_process_documents()
 
     print(processed_chunks)
     print(len(processed_chunks))
     print([d.page_content for d in processed_chunks])
     print([d.metadata for d in processed_chunks])
+
+    # save the above processed data into a json file
+    with open("processed_data.json", "w") as f:
+        json.dump(processed_chunks, f, default=lambda x: x.__dict__)

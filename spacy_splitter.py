@@ -12,7 +12,8 @@ class UniSplitter:
         chunk_overlap: Optional[int] = None,
         add_start_index: bool = False,
         use_sizeoverlap: Optional[bool] = False,
-        allow_chunk_oversize: Optional[bool] = False
+        allow_chunk_oversize: Optional[bool] = False,
+        model_name: str = "en_core_web_md",
     ) -> None:
         """Initialize with chunk size and overlap."""
         self.chunk_size = int(chunk_size) if chunk_size is not None else None
@@ -20,8 +21,11 @@ class UniSplitter:
         self.use_sizeoverlap = use_sizeoverlap
         self._add_start_index = add_start_index
         self._allow_chunk_oversize = allow_chunk_oversize
+        self.model_name = model_name
+        spacy.cli.download(model_name)
 
-    def split_text_in_json(self, texts: List[str], metadatas: Optional[List[dict]] = None, model_name: str = 'en_core_web_md') -> List[Document]:
+
+    def split_text_in_json(self, texts: List[str], metadatas: Optional[List[dict]] = None) -> List[Document]:
         """
         Splits the text in the JSON file into chunks using SpacyTextSplitter and saves the result.
         
@@ -29,13 +33,12 @@ class UniSplitter:
             model_name (str): The name of the Spacy model to use. Defaults to 'en_core_web_md'.
         """
         # Download the Spacy model if not available
-        spacy.cli.download(model_name)
         try:
             # Initialize the SpacyTextSplitter
             if self.use_sizeoverlap and self.chunk_size and self.chunk_overlap and self._allow_chunk_oversize:
-                text_splitter = SpacyTextSplitter(chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap, pipeline=model_name)
+                text_splitter = SpacyTextSplitter(chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap, pipeline=self.model_name)
             else:
-                text_splitter = SpacyTextSplitter(pipeline=model_name)
+                text_splitter = SpacyTextSplitter(pipeline=self.model_name)
             
             # Process each item in the json data
             _metadatas = metadatas or [{}] * len(texts)
@@ -79,7 +82,7 @@ class UniSplitter:
                 split_chunks.append(chunk)
         return split_chunks
 
-    def split_spacy_documents(self, documents: Iterable[Document] ,  model_name: Optional[str] = None) -> List[Document]:
+    def split_spacy_documents(self, documents: Iterable[Document]) -> List[Document]:
         """split the spacy documents into chunks
         
         Parameters:
@@ -89,8 +92,5 @@ class UniSplitter:
         for doc in documents:
             texts.append(doc.page_content)
             metadatas.append(doc.metadata)
-        
-        if model_name:
-            return self.split_text_in_json(texts, metadatas, model_name)
         
         return self.split_text_in_json(texts, metadatas)

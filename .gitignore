@@ -12,3 +12,4 @@ text.json
 __pycache__/
 output1.txt
 db/
+temp/
