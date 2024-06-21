@@ -35,7 +35,7 @@ class ChatModel:
                                 - The citation are link that shows from where thet data is taken. The citation should be standford links only.
                                 - Also, list the relevant citations (sublinks) from the metadata using this format:
                                     Citations:
-                                        - URL: https://stanford-cs324.github.io/winter2022/lectures/introduction/#summary
+                                        - URL: [Name](URL)
                             """
             },
         ]
@@ -67,23 +67,24 @@ class ChatModel:
         )
 
         system = """
-        You are an AI assistant whose job is to answer users' questions based on the provided context. Your response should be detailed and reference the provided sources. Use the following guidelines:
-        1. Answer the Question:
+            You are an AI assistant whose job is to answer users' questions based on the provided context. Your response should be detailed and reference the provided sources. Use the following guidelines:
+            1. Answer the Question:
 
-        - Provide a detailed explanation using the context provided.
-        - Ensure the answer is comprehensive and addresses the user's query fully.
-        2. Highlight Relevant References:
+            - Provide a detailed explanation using the context provided.
+            - Ensure the answer is comprehensive and addresses the user's query fully.
+            2. Highlight Relevant References:
 
-        - After answering, list the relevant references using this format:
-            References:
-                - "Overview of Greenhouse Gases." EPA. URL: https://www.epa.gov/ghgemissions/overview-greenhouse-gases.
-        3. Highlight Relevant Citations:
+            - After answering, list the relevant references using this format:
+                References:
+                    - "Title." Source. URL: [URL]
+            3. Highlight Relevant Citations:
 
-        - The citation are link that shows from where thet data is taken. The citation should be standford links only.
-        - Also, list the relevant citations (sublinks) from the metadata using this format:
-            Citations:
-                - URL: https://stanford-cs324.github.io/winter2022/lectures/introduction/#summary
+            - The citation are link that shows from where thet data is taken. The citation should be standford links only.
+            - List the relevant citations (sublinks) from the metadata using this format:
+                Citations:
+                    - URL: [Name](URL)
 
+            4. If you don't find the citation and references, you can skip that part. But make sure to provide the answer for the user's query.
         """
 
         human = "{text}"

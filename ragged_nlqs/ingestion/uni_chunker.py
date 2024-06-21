@@ -3,7 +3,7 @@ from typing import List, Optional
 from langchain.docstore.document import Document
 from langchain.document_loaders.base import BaseLoader
 from langchain_community.document_loaders.helpers import detect_file_encodings
-from spacy_splitter import UniSplitter
+from ragged_nlqs.ingestion.spacy_splitter import UniSplitter
 import json
 
 logger = logging.getLogger(__name__)

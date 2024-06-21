@@ -3,7 +3,7 @@ from qdrant_client import QdrantClient
 from langchain_huggingface import HuggingFaceEmbeddings
 import json
 
-from uni_chunker import UniTextLoader, UniTextProcessor
+from ragged_nlqs.ingestion.uni_chunker import UniTextLoader, UniTextProcessor
 
 class VectorManager:
     def __init__(self, path: str, collection_name: str, model_name: str , url: str = None , api_key: str = None):
