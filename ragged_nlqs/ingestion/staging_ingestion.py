@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 from ragged_nlqs.ingestion.vector_manager import VectorManager
 
-def staging_ingestion(url , output_file_path , scrape_sublinks=True , max_workers=5 , encoding="utf-8" , autodetect_encoding=True, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False , spacy_model='en_core_web_md', embedding_model="sentence-transformers/all-mpnet-base-v2" , collection_name="Standford_embedding" , qdrant_url=None , qdrant_api_key=None, db_path="./db/qdrant_standford_embedding"):
+def process_ingest(url , output_file_path , scrape_sublinks=True , max_workers=5 , encoding="utf-8" , autodetect_encoding=True, use_sizeoverlap=False, chunk_size=1000, chunk_overlap=100 , add_start_index=True , allow_chunk_oversize=False , spacy_model='en_core_web_md', embedding_model="sentence-transformers/all-mpnet-base-v2" , collection_name="Standford_embedding" , qdrant_url=None , qdrant_api_key=None, db_path="./db/qdrant_standford_embedding"):
     crawler = UniCrawler(url)
     
     final_json = crawler.uni_crawler(scrape_sublinks=scrape_sublinks, max_workers=max_workers)
