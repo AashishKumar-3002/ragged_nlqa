@@ -25,10 +25,7 @@ def rerank_passages(query, passages, type="nano" , cache_dir=".cache/ranking_mod
         ranker = Ranker()
     return ranker.rerank(RerankRequest(query=query, passages=passages))
 
-def ranking_passage_formatter(output_path , query, type_model="nano"):
-
-    with open(output_path, 'r') as f:
-        data = json.loads(f.read())
+def ranking_passage_formatter(data , query, type_model="nano"):
 
     json_reranking = []
     for i , docs in enumerate(data):
@@ -48,5 +45,7 @@ def ranking_passage_formatter(output_path , query, type_model="nano"):
 if __name__ == "__main__":
     # Example usage
     query = "what are the major environmental risk by llms?"
-    reranked_passages = ranking_passage_formatter("temp/result.json" , query, type_model="nano")
+    with open("temp/result.json") as f:
+        data = json.load(f.read())
+    reranked_passages = ranking_passage_formatter( data, query, type_model="nano")
     print(reranked_passages)

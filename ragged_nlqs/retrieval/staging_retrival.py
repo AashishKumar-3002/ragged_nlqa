@@ -1,0 +1,34 @@
+
+import json
+from urllib.parse import urljoin
+from qdrant_client.http import models as rest
+from ragged_nlqs.retrieval.reranking import ranking_passage_formatter
+from ragged_nlqs.retrieval.vector_search import VectorSearch
+
+
+def process_retrival(db_path ,collection_name, output_retrival_path, query , k=7 , filter_params="metadata.title", title_filters=None , reranking_model="nano"):
+    search = VectorSearch(path=db_path , collection_name=collection_name)
+    filter_values = []
+    for title_filter in title_filters:
+       filter_values.append(rest.FieldCondition(key=filter_params, match=rest.MatchValue(value=title_filter)))
+
+    filter = rest.Filter(should=filter_values)
+    found_docs = search.search(query, k=10 , filter=filter)
+
+    # Convert the found docs to json
+    retrival_results = json.dumps(found_docs, default=lambda x: x.__dict__)
+
+    reranked_passages = ranking_passage_formatter( retrival_results, query, type_model=reranking_model)
+
+    text_sublinks = []
+    for context in reranked_passages:
+        text = context['text']
+        sublinks = context['meta']['sublinks']
+        title = context['meta']['title']
+        author = context['meta']['author']
+        host = context['meta']['hostname']
+        source = context['meta']['source']
+        final_text = "Title: " + title + "\n" + "Author: " + author + "\n" + "Host: " + host + "\n" + "Source: " + source + "\n" + "Here is the main text for refrence: " + text + "\n" + "Here are the citation and refreces links: " + str(sublinks)
+        text_sublinks.append(final_text)
+    
+    #write a fn to check the token of text_sublinks and adjust it according to the selected chat model
