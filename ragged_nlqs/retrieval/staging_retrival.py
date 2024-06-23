@@ -51,16 +51,18 @@ def process_retrival(db_path ,collection_name, output_retrival_path, query , k=7
         context = str(text_sublinks)
         # Call the hf chat model
         ChatModel(model_name="mistralai/Mistral-7B-Instruct-v0.2", api_key=api_key)
-        ChatModel.HuggingFaceInferenceClient(context=context , query=query)
+        res = ChatModel.HuggingFaceInferenceClient(context=context , query=query)
     elif chat_model_type == "groq":
         context = str(text_sublinks)
         # Call the groq chat model
         ChatModel(model_name="llama3-8b-8192", api_key=api_key)
-        ChatModel.GroqClientLlm(context=context , query=query)
+        res = ChatModel.GroqClientLlm(context=context , query=query)
     elif chat_model_type == "replicate":
         context = str(text_sublinks)
         # Call the replicate chat model
         ChatModel(model_name="mistralai/mixtral-8x7b-instruct-v0.1", api_key=api_key)
-        ChatModel.replicateChatLlm(context=context , query=query)
+        res = ChatModel.replicateChatLlm(context=context , query=query)
     else:
         raise ValueError("Invalid chat model type. Please select one of the following: hf, groq, replicate")
+
+    return res
