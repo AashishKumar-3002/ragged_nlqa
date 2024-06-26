@@ -8,7 +8,7 @@ from ragged_nlqs.retrieval.token_counter import get_token_count
 from ragged_nlqs.retrieval.chat_model import ChatModel
 
 
-def process_retrival(db_path ,collection_name, output_retrival_path, query , k=7 , filter_params="metadata.title", title_filters=None , reranking_model="nano", chat_model_type=None, api_key="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"):
+def process_retrival(db_path ,collection_name, output_retrival_path, query , k=7 , filter_params="metadata.title", title_filters=None , reranking_model="nano", chat_model_type="hf", api_key="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"):
     search = VectorSearch(path=db_path , collection_name=collection_name)
     filter_values = []
     for title_filter in title_filters:
