@@ -1,26 +1,26 @@
 nlqa:
   ingestion:
-    ingest_url: "https://en.wikipedia.org/wiki/Paris"
-    output_file_path: "data/ingestion"
+    url: "https://en.wikipedia.org/wiki/Paris"
+    output_path: "data/ingestion"
     preprocessing:
       scrape_sublinks: True
       max_workers: 5
       encoding: "utf-8"
       auto_detect_encoding: True
-      use_sizeoverlap: True
+      size_overlap: True
       chunk_size: 1000
       chunk_overlap: 100
       add_start_index: False
       allow_chunk_overlap: False
       spacy_model: "en_core_web_md"
-    ingestion_config:
+    config:
       embedding_model: "sentence-transformers/all-mpnet-base-v2"
       collection_name: "wiki_paris"
       qdrant_url: None
       qdrant_api_key: None
       db_path: "data/db/wiki_paris"
   retrieval:
-    retrieval_config:
+    config:
       embedding_model: "sentence-transformers/all-mpnet-base-v2"
       collection_name: "wiki_paris"
       qdrant_url: None
@@ -29,8 +29,8 @@ nlqa:
     search:
       query: "Paris is the capital of France"
       top_k: 10
-      search_params_filters: "metadata.title"
-      search_params_filters_values: None
+      filters: "metadata.title"
+      filter_values: None
       reranking_model: "medium"
       chat_model_type: "hf"
       api_key: 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
