@@ -17,4 +17,6 @@ def load_config(config_path='config/config.yaml'):
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     
+    new_config_path = os.path.join(os.path.expanduser('~'), config['nlqa']['retrieval']['search']['reranking_model_path'])
+    config['nlqa']['retrieval']['search']['reranking_model_path'] = new_config_path
     return config

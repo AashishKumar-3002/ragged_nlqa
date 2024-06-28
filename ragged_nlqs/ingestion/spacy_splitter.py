@@ -22,7 +22,13 @@ class UniSplitter:
         self._add_start_index = add_start_index
         self._allow_chunk_oversize = allow_chunk_oversize
         self.model_name = model_name
-        spacy.cli.download(model_name)
+        #try to load the model if not available then download it
+        try:
+            spacy.load(model_name)
+        except OSError:
+            spacy.cli.download(model_name)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 
     def split_text_in_json(self, texts: List[str], metadatas: Optional[List[dict]] = None) -> List[Document]:

@@ -16,21 +16,22 @@ nlqa:
     config:
       embedding_model: "sentence-transformers/all-mpnet-base-v2"
       collection_name: "wiki_paris"
-      qdrant_url: None
-      qdrant_api_key: None
+      qdrant_url: null
+      qdrant_api_key: null
       db_path: "data/db/wiki_paris"
   retrieval:
     config:
       embedding_model: "sentence-transformers/all-mpnet-base-v2"
       collection_name: "wiki_paris"
-      qdrant_url: None
-      qdrant_api_key: None
+      qdrant_url: null
+      qdrant_api_key: null
       db_path: "data/db/wiki_paris"
     search:
-      query: "Paris is the capital of France"
+      query: "What is the capital of France?"
       top_k: 10
       filters: "metadata.title"
-      filter_values: None
+      filter_values: null
       reranking_model: "medium"
+      reranking_model_path: ".cache/reranking_models"
       chat_model_type: "hf"
       api_key: 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

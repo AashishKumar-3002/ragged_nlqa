@@ -23,7 +23,7 @@ def process_ingest(url , output_file_path , scrape_sublinks=True , max_workers=5
 
     print(len(processed_chunks))
     
-    vector_manager = VectorManager(path=db_path, collection_name=collection_name, model_name=embedding_model , qdrant_url=qdrant_url , qdrant_api=qdrant_api_key)
+    vector_manager = VectorManager(path=db_path, collection_name=collection_name, model_name=embedding_model , qdrant_url=qdrant_url , qdrant_api_key=qdrant_api_key)
 
     qdrant = vector_manager.upsert_documents(processed_chunks)
 

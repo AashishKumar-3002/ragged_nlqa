@@ -46,15 +46,17 @@ class ChatModel:
         client = InferenceClient(self.model_name, headers=headers)
         try:
             response = client.chat_completion(messages, max_tokens=max_tokens, temperature=temperature)
+            return response
         except ProtocolError as e:
             # Handle the exception here
             print("Retrying...")
             response = client.chat_completion(messages, max_tokens=30000, temperature=temperature)
+            return response
+        
         except Exception as e:
             print(e)
             print("Error")
 
-        return response
 
     def GroqClientLlm(self, context , query, temprature=0):
         if not self.model_name:

@@ -1,7 +1,7 @@
 import json
 from flashrank import Ranker , RerankRequest
 
-def rerank_passages(query, passages, type="nano" , cache_dir=".cache/ranking_model" , max_length=10000):
+def rerank_passages(query, passages, type="nano" , cache_dir="~/.cache/ranking_model" , max_length=10000):
     # Nano (~4MB), blazing fast model & competitive performance (ranking precision).
     if type=="nano":
         ranker = Ranker()
@@ -25,7 +25,10 @@ def rerank_passages(query, passages, type="nano" , cache_dir=".cache/ranking_mod
         ranker = Ranker()
     return ranker.rerank(RerankRequest(query=query, passages=passages))
 
-def ranking_passage_formatter(data , query, type_model="nano"):
+def ranking_passage_formatter(data , query, cache_dir, type_model="nano"):
+
+    # Parse the JSON string back to Python objects
+    data = json.loads(data)
 
     json_reranking = []
     for i , docs in enumerate(data):
@@ -39,7 +42,9 @@ def ranking_passage_formatter(data , query, type_model="nano"):
         }
         json_reranking.append(reranking)
 
-    reranked_passages = rerank_passages(query, json_reranking , type=type_model , cache_dir=".cache/ranking_model" , max_length=10000)
+    reranked_passages = rerank_passages(query, json_reranking , type=type_model , cache_dir=cache_dir , max_length=10000)
+    print(len(reranked_passages))
+    print(type(reranked_passages))
     return reranked_passages
 
 if __name__ == "__main__":
