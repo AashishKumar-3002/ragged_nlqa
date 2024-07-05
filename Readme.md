@@ -1,1 +1,1 @@
-THis is a nlqa project
+THis is a nlqa project, which takes any website and you can query on it.
